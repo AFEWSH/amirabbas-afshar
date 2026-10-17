@@ -2,6 +2,8 @@
 
 ## Completed
 
+- README refresh: replaced the outdated planned-feature overview with current bilingual features, verified dependency versions, setup and single-admin commands, content/social icon management, asset locations, tests, deployment, and documentation links. Documentation-only change; local links, referenced paths, and whitespace were checked without running application tests or rebuilding unchanged assets.
+
 - Public bilingual conversion, Phase 1 (routing and locale) is complete: Persian is assigned to `/`, `/projects`, and `/blog` and their detail pages; matching English pages live under `/en`. The contact POST has both locale routes, links stay in the current locale, and a language switch preserves detail slugs. Public HTML now sets `lang` and `dir` from the route. Filament remains at `/admin` in English. Existing slugs and data were not changed.
 - Phase 1 verification passes: 39 tests (460 assertions), Vite production build, scoped Pint check, route cache/clear, and `git diff --check`. The repository-wide Pint check still flags pre-existing formatting in unrelated files. Public UI strings and database content remain English until the separately requested later phases.
 - Public bilingual conversion, Phase 2 (public interface) is complete: static text on the home, project, and article pages now uses Laravel translations, with Persian strings at the root and original English strings under `/en`. Contact feedback, validation attributes/messages, pagination labels, headings, empty states, and accessibility labels are localized. Dates use locale-specific Gregorian month names; Persian pages have RTL typography and LTR email inputs. No database fields or admin pages were changed.
