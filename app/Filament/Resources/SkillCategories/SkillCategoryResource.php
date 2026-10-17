@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Filament\Resources\SkillCategories;
+
+use App\Filament\Resources\SkillCategories\Pages\ManageSkillCategories;
+use App\Models\SkillCategory;
+use BackedEnum;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class SkillCategoryResource extends Resource
+{
+    protected static ?string $model = SkillCategory::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('name')->required()->maxLength(255),
+                TextInput::make('slug')->required()->alphaDash()->unique(ignoreRecord: true)->maxLength(255),
+                TextInput::make('sort_order')->numeric()->integer()->minValue(0)->default(0)->required(),
+                Toggle::make('is_visible')->label('Visible on site')->default(false),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('slug'),
+                TextColumn::make('sort_order')->sortable(),
+                IconColumn::make('is_visible')->boolean(),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make()->disabled(fn (SkillCategory $record): bool => $record->skills()->exists()),
+            ])
+            ->defaultSort('sort_order');
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ManageSkillCategories::route('/'),
+        ];
+    }
+}

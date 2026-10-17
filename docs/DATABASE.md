@@ -17,7 +17,7 @@ All tables use an `id` primary key and timestamps unless noted. Add foreign keys
 | `project_technology` | project_id, technology_id | Unique pair. |
 | `project_images` | project_id, path, alt_text, sort_order | Has many ordered images. |
 | `blog_categories` | name, slug (unique) | Has many posts. |
-| `blog_posts` | blog_category_id, title, slug (unique), excerpt, content, featured_image_path, status, published_at, seo_title, seo_description | Public only when published and publication time has arrived. |
+| `blog_posts` | blog_category_id, title, slug (unique), excerpt, content, featured_image_path, featured_image_alt, status, published_at, seo_title, seo_description | Public only when published and publication time has arrived. Image description supports useful alt text. |
 | `contact_messages` | name, email, subject, message, read_at | Stored submissions; no public read access. |
 | `resume_files` | language (unique: `en`/`fa`), path, original_name | At most one PDF per language. |
 | `site_settings` | site_name, default_seo_description, og_image_path | Singleton; keep narrow and extend only when needed. |

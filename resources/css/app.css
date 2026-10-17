@@ -1,2 +1,46 @@
 @import 'tailwindcss';
 @source '../views/**/*.blade.php';
+
+@theme {
+    --color-ink: #101719;
+    --color-surface: #182225;
+    --color-paper: #f3f0e9;
+    --color-muted: #aebcbd;
+    --color-line: #344144;
+    --color-accent: #76dfd0;
+}
+
+@layer base {
+    html { scroll-behavior: smooth; }
+    body { font-family: ui-sans-serif, system-ui, sans-serif; }
+    a:focus-visible, summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+    [id] { scroll-margin-top: 6rem; }
+}
+
+@layer components {
+    .site-container { @apply mx-auto w-full max-w-6xl px-6 sm:px-8; }
+    .section-block { @apply py-20 sm:py-28; }
+    .nav-link { @apply rounded-sm transition-colors hover:text-accent focus-visible:text-accent; }
+    .nav-link[aria-current='page'] { @apply text-accent; }
+    .button-primary { @apply inline-flex min-h-11 items-center gap-3 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-ink transition hover:bg-paper; }
+    .button-secondary { @apply inline-flex min-h-11 items-center rounded-lg border border-line px-5 py-3 text-sm font-semibold text-paper transition hover:border-accent hover:text-accent; }
+    .form-input { @apply w-full rounded-lg border border-line bg-surface px-4 py-3 text-paper placeholder:text-muted focus:border-accent focus:outline-2 focus:outline-offset-2 focus:outline-accent; }
+    .placeholder-label { @apply font-medium text-accent; }
+    .mobile-menu a { @apply block rounded-md px-3 py-2 text-sm text-paper hover:bg-line focus-visible:bg-line; }
+    .skip-link { @apply sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-ink; }
+    .article-content { @apply text-lg leading-8 text-muted; }
+    .article-content p, .article-content ul, .article-content ol, .article-content blockquote, .article-content pre { @apply mb-6; }
+    .article-content h2 { @apply mt-12 mb-5 text-3xl font-semibold text-paper; }
+    .article-content h3 { @apply mt-9 mb-4 text-2xl font-semibold text-paper; }
+    .article-content ul { @apply list-disc ps-7; }
+    .article-content ol { @apply list-decimal ps-7; }
+    .article-content a { @apply text-accent underline underline-offset-4; }
+    .article-content blockquote { @apply border-s-2 border-accent ps-5 italic; }
+    .article-content pre { @apply overflow-x-auto rounded-xl border border-line bg-surface p-5 text-sm; }
+    .article-content code { @apply rounded bg-surface px-1 py-0.5 text-sm text-paper; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
