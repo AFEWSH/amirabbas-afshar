@@ -20,6 +20,20 @@ class ProfileAndSkillsTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_social_icons_appear_in_contact_and_in_all_public_footers(): void
+    {
+        SocialLink::create(['label' => 'Telegram', 'label_fa' => 'تلگرام', 'url' => 'https://t.me/portfolio_test', 'icon_key' => 'telegram', 'is_visible' => true]);
+        SocialLink::create(['label' => 'Hidden', 'label_fa' => 'پنهان', 'url' => 'https://example.test/hidden-network', 'is_visible' => false]);
+
+        $home = $this->get('/')->assertOk()->assertSee('aria-label="تلگرام"', false)
+            ->assertDontSee('https://example.test/hidden-network');
+        $this->assertSame(2, substr_count($home->getContent(), 'class="contact-social" href="https://t.me/portfolio_test"'));
+        foreach (['/projects', '/blog', '/en/projects', '/en/blog'] as $route) {
+            $response = $this->get($route)->assertOk()->assertDontSee('https://example.test/hidden-network');
+            $this->assertSame(1, substr_count($response->getContent(), 'class="contact-social" href="https://t.me/portfolio_test"'));
+        }
+    }
+
     public function test_home_shows_configured_visible_records_only_in_order(): void
     {
         Profile::create(['id' => 1, 'full_name' => 'Configured Name', 'title' => 'Configured Title', 'introduction' => 'Configured introduction', 'background' => 'Configured background', 'contact_email' => 'owner@example.test']);
@@ -97,11 +111,11 @@ class ProfileAndSkillsTest extends TestCase
             ->callAction('create', data: ['skill_category_id' => $category->id, 'name' => 'PHP', 'proficiency' => 'advanced', 'sort_order' => 1, 'is_visible' => true])
             ->assertHasNoErrors();
         Livewire::test(ManageSocialLinks::class)
-            ->callAction('create', data: ['label' => 'GitHub', 'url' => 'https://github.com/example', 'sort_order' => 1, 'is_visible' => true])
+            ->callAction('create', data: ['label' => 'GitHub', 'url' => 'https://github.com/example', 'icon_key' => 'github', 'sort_order' => 1, 'is_visible' => true])
             ->assertHasNoErrors();
 
         $this->assertDatabaseHas('skills', ['name' => 'PHP', 'skill_category_id' => $category->id]);
-        $this->assertDatabaseHas('social_links', ['label' => 'GitHub']);
+        $this->assertDatabaseHas('social_links', ['label' => 'GitHub', 'icon_key' => 'github']);
     }
 
     public function test_admin_can_edit_and_delete_records_and_invalid_values_are_rejected(): void

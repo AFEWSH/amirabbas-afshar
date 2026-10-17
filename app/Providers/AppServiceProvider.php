@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Profile;
 use App\Models\SiteSetting;
+use App\Models\SocialLink;
 use App\Support\PublicUrl;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $view->with('settings', SiteSetting::find(1));
+            $view->with('footerSocialLinks', SocialLink::visible()->availableInPublicLocale('label')->orderBy('sort_order')->orderBy('id')->get());
         });
     }
 }

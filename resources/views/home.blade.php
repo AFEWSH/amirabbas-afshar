@@ -164,17 +164,30 @@
                 <p class="home-kicker"><span></span>{{ __('Contact') }}</p>
                 <h2 id="contact-title">{{ __('Let’s connect') }}</h2>
                 <p class="mt-3 max-w-2xl leading-7 text-cyan-950/90">{{ __('Have a question or a project in mind? Send a message.') }}</p>
-                @if($profile?->contact_email)<p class="mt-3 font-semibold text-cyan-950">{{ __('Or email') }} <a class="underline underline-offset-4" href="mailto:{{ $profile->contact_email }}">{{ $profile->contact_email }}</a></p>@endif
-                @if($socialLinks->isNotEmpty())
-                    <ul class="mt-5 flex flex-wrap gap-2" aria-label="{{ __('Social links') }}">
+                <div class="contact-actions">
+                    <button type="button" class="contact-open-button" data-contact-open aria-haspopup="dialog" aria-controls="contact-dialog">{{ __('Send message') }} <span aria-hidden="true">➤</span></button>
+                    <ul class="contact-socials" aria-label="{{ __('Social links') }}">
                         @foreach($socialLinks as $link)
                             @if(preg_match('/^https?:\/\//i', $link->url))
-                                <li><a class="social-chip" href="{{ $link->url }}" target="_blank" rel="noopener noreferrer">{{ $link->publicText('label') }} <span aria-hidden="true">↗</span></a></li>
+                                <li><a class="contact-social" href="{{ $link->url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $link->publicText('label') }}" title="{{ $link->publicText('label') }}"><x-contact-icon :url="$link->url" :icon="$link->icon_key" /></a></li>
                             @endif
                         @endforeach
+                        @if($profile?->contact_email)
+                            <li><a class="contact-social" href="mailto:{{ $profile->contact_email }}" aria-label="{{ __('Or email') }}" title="{{ $profile->contact_email }}"><x-contact-icon :url="'mailto:'.$profile->contact_email" /></a></li>
+                        @endif
                     </ul>
-                @endif
+                </div>
                 @if(session('contact_success'))<p class="mt-5 rounded-xl border border-cyan-950/20 bg-white/50 p-4 font-medium text-cyan-950" role="status">{{ session('contact_success') }}</p>@endif
+
+            </div>
+        </section>
+        <dialog id="contact-dialog" class="contact-dialog" aria-labelledby="contact-dialog-title" @if($errors->any() || session('contact_error')) data-auto-open @endif>
+            <div class="contact-dialog-panel">
+                <div class="contact-dialog-heading">
+                    <h2 id="contact-dialog-title">{{ __('Send message') }}</h2>
+                    <button type="button" class="contact-dialog-close" data-contact-close aria-label="{{ __('Close') }}"><span aria-hidden="true">×</span></button>
+                </div>
+                <p class="mt-2 text-sm leading-7 text-muted">{{ __('Have a question or a project in mind? Send a message.') }}</p>
                 @if(session('contact_error'))<p class="mt-5 rounded-xl border border-red-900/20 bg-red-50/70 p-4 font-medium text-red-900" role="alert">{{ session('contact_error') }}</p>@endif
                 @if($errors->any())<div class="mt-5 rounded-xl border border-red-900/20 bg-red-50/70 p-4 text-red-900" role="alert"><p>{{ __('Please correct the following:') }}</p><ul class="mt-2 list-disc ps-5">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
                 <form method="POST" action="{{ \App\Support\PublicUrl::route('contact.store') }}" class="contact-form">
@@ -189,6 +202,6 @@
                     <button class="button-primary" type="submit">{{ __('Send message') }} <span aria-hidden="true">↗</span></button>
                 </form>
             </div>
-        </section>
+        </dialog>
     </div>
 </x-layouts.public>

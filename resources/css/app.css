@@ -135,11 +135,26 @@
     .home-featured-article:has(> img) { @apply grid grid-cols-[5rem_1fr] items-center gap-2; }
     .home-featured-article:has(> img) > img { @apply aspect-square h-20 w-20 rounded-xl object-cover ms-4; }
     .home-featured-article:has(> img) > div { @apply p-3 ps-1; }
-    .home-contact { @apply bg-accent text-cyan-950; }
+    .home-contact { @apply grid gap-4 bg-accent py-6 text-cyan-950 sm:grid-cols-[1fr_11rem] sm:py-6 lg:grid-cols-[1fr_13rem] lg:py-6; }
     .home-contact .home-kicker, .home-contact h2 { @apply text-cyan-950; }
     .home-contact .home-kicker span { @apply bg-pink; }
-    .contact-content { @apply lg:col-start-1 lg:row-start-1; }
-    .contact-art { @apply relative flex min-h-40 items-center justify-center lg:col-start-2 lg:row-start-1; }
+    .contact-content { @apply min-w-0 sm:col-start-1 sm:row-start-1; }
+    .contact-art { @apply relative order-2 flex items-center justify-center sm:order-none sm:col-start-2 sm:row-start-1; }
+    .contact-art .contact-illustration { @apply w-40 sm:w-full; }
+    .home-contact .home-kicker { @apply hidden; }
+    .home-contact h2 { @apply mt-0 text-xl sm:text-2xl; }
+    .contact-actions { @apply mt-4 flex flex-wrap items-center gap-4; }
+    .contact-open-button { @apply inline-flex cursor-pointer items-center justify-center gap-3 rounded-xl bg-pink px-6 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-pink/90; }
+    .contact-socials { @apply flex flex-wrap gap-2; }
+    .contact-social { @apply grid size-10 place-items-center rounded-xl bg-cyan-950 text-white transition hover:-translate-y-0.5 hover:bg-cyan-900; }
+    .contact-dialog { @apply fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-3xl border border-line bg-surface p-0 text-paper shadow-2xl; }
+    .contact-dialog::backdrop { background: rgb(5 12 16 / 0.75); backdrop-filter: blur(6px); }
+    .contact-dialog-panel { @apply p-6 sm:p-8; }
+    .contact-dialog-heading { @apply flex items-center justify-between gap-4; }
+    .contact-dialog-heading h2 { @apply text-xl font-bold; }
+    .contact-dialog-close { @apply grid size-10 shrink-0 cursor-pointer place-items-center rounded-full bg-white/10 text-2xl text-paper hover:bg-white/20; }
+    .contact-dialog .contact-label { @apply text-paper; }
+    .contact-dialog .contact-input { @apply bg-white text-slate-950; }
     .social-chip { @apply inline-flex rounded-lg border border-cyan-950/20 bg-cyan-950 px-3 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-cyan-900; }
     .contact-form { @apply mt-6 grid max-w-3xl gap-4; }
     .contact-label { @apply mb-1.5 block text-sm font-semibold text-cyan-950; }

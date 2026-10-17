@@ -70,6 +70,16 @@
                     <img src="{{ asset('images/logo.png') }}" alt="{{ $siteName }}" width="1774" height="887" class="h-20 w-40 object-contain" loading="lazy">
                 </a>
                 <p class="mt-3 max-w-xs text-sm leading-6 text-muted">{{ $profile?->publicText('title') ?: __('Full-Stack Developer') }}</p>
+                <ul class="mt-4 flex flex-wrap gap-2" aria-label="{{ __('Social links') }}">
+                    @foreach($footerSocialLinks as $link)
+                        @if(preg_match('/^https?:\/\//i', $link->url))
+                            <li><a class="contact-social" href="{{ $link->url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $link->publicText('label') }}" title="{{ $link->publicText('label') }}"><x-contact-icon :url="$link->url" :icon="$link->icon_key" /></a></li>
+                        @endif
+                    @endforeach
+                    @if($profile?->contact_email)
+                        <li><a class="contact-social" href="mailto:{{ $profile->contact_email }}" aria-label="{{ __('Or email') }}" title="{{ $profile->contact_email }}"><x-contact-icon :url="'mailto:'.$profile->contact_email" /></a></li>
+                    @endif
+                </ul>
             </div>
             <nav class="flex flex-col gap-3" aria-label="{{ __('Footer navigation') }}">
                 <a class="footer-link" href="{{ \App\Support\PublicUrl::route('home') }}#about">{{ __('About') }}</a>

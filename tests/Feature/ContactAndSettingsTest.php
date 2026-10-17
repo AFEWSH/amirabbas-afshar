@@ -22,18 +22,22 @@ class ContactAndSettingsTest extends TestCase
 
     public function test_contact_form_validates_and_saves_a_message(): void
     {
-        $this->get('/')->assertOk()->assertSee('name="_token"', false)->assertSee('ارسال پیام');
+        $this->get('/')->assertOk()->assertSee('name="_token"', false)->assertSee('ارسال پیام')
+            ->assertSee('aria-controls="contact-dialog"', false)
+            ->assertSee('<dialog id="contact-dialog"', false)
+            ->assertDontSee('data-auto-open');
 
         $this->post('/contact', ['name' => 'A', 'email' => 'bad', 'subject' => '', 'message' => 'short'])
             ->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
         $this->assertDatabaseCount('contact_messages', 0);
-        $this->get('/')->assertOk()->assertSee('لطفاً خطاهای زیر را برطرف کنید:');
+        $this->get('/')->assertOk()->assertSee('لطفاً خطاهای زیر را برطرف کنید:')
+            ->assertSee('data-auto-open')->assertSee('value="A"', false);
 
         $this->post('/contact', $this->validMessage())
             ->assertRedirect(route('home').'#contact')
             ->assertSessionHas('contact_success');
         $this->assertDatabaseHas('contact_messages', ['name' => 'Visitor', 'email' => 'visitor@example.test', 'read_at' => null]);
-        $this->get('/')->assertOk()->assertSee('پیام شما دریافت شد.');
+        $this->get('/')->assertOk()->assertSee('پیام شما دریافت شد.')->assertDontSee('data-auto-open');
     }
 
     public function test_honeypot_discards_submission_and_rate_limit_gives_feedback(): void
