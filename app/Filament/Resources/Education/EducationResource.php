@@ -36,6 +36,10 @@ class EducationResource extends Resource
                 DatePicker::make('start_date'),
                 DatePicker::make('end_date')->rule('after_or_equal:start_date'),
                 Textarea::make('description')->rows(4),
+                TextInput::make('institution_fa')->label('Institution (Persian)')->maxLength(255),
+                TextInput::make('degree_fa')->label('Degree (Persian)')->maxLength(255),
+                TextInput::make('field_of_study_fa')->label('Field Of Study (Persian)')->maxLength(255),
+                Textarea::make('description_fa')->label('Description (Persian)')->rows(4),
                 TextInput::make('sort_order')->numeric()->integer()->minValue(0)->default(0)->required(),
                 Toggle::make('is_visible')->label('Visible on site')->default(false),
             ]);

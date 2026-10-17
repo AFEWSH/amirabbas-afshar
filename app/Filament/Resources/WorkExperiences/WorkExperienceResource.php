@@ -40,6 +40,13 @@ class WorkExperienceResource extends Resource
                 Textarea::make('description')->rows(3),
                 Textarea::make('responsibilities')->rows(4)->helperText('Plain text; use one line per point.'),
                 Textarea::make('achievements')->rows(4)->helperText('Plain text; use one line per point.'),
+                TextInput::make('company_fa')->label('Company (Persian)')->maxLength(255),
+                TextInput::make('job_title_fa')->label('Job Title (Persian)')->maxLength(255),
+                TextInput::make('employment_type_fa')->label('Employment Type (Persian)')->maxLength(255),
+                TextInput::make('location_fa')->label('Location (Persian)')->maxLength(255),
+                Textarea::make('description_fa')->label('Description (Persian)')->rows(4),
+                Textarea::make('responsibilities_fa')->label('Responsibilities (Persian)')->rows(4),
+                Textarea::make('achievements_fa')->label('Achievements (Persian)')->rows(4),
                 TextInput::make('sort_order')->numeric()->integer()->minValue(0)->default(0)->required(),
                 Toggle::make('is_visible')->label('Visible on site')->default(false),
             ]);

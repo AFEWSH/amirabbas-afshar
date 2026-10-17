@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Profile;
 use App\Models\SiteSetting;
+use App\Support\PublicUrl;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -17,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         RateLimiter::for('contact', fn (Request $request) => Limit::perMinute(5)
             ->by($request->ip() ?: 'unknown')
-            ->response(fn () => redirect()->to(route('home').'#contact')->with('contact_error', 'Please wait before sending another message.')));
+            ->response(fn () => redirect()->to(PublicUrl::route('home').'#contact')->with('contact_error', __('Please wait before sending another message.'))));
 
         View::composer('components.layouts.public', function (ViewInstance $view): void {
             if (! ($view->getData()['profile'] ?? null)) {

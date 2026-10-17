@@ -29,6 +29,7 @@ class SkillCategoryResource extends Resource
         return $schema
             ->components([
                 TextInput::make('name')->required()->maxLength(255),
+                TextInput::make('name_fa')->label('Name (Persian)')->maxLength(255),
                 TextInput::make('slug')->required()->alphaDash()->unique(ignoreRecord: true)->maxLength(255),
                 TextInput::make('sort_order')->numeric()->integer()->minValue(0)->default(0)->required(),
                 Toggle::make('is_visible')->label('Visible on site')->default(false),

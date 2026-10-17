@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
+use App\Support\PublicUrl;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,7 @@ class ContactController
     public function store(Request $request): RedirectResponse
     {
         if ($request->filled('website')) {
-            return redirect()->to(route('home').'#contact')->with('contact_success', 'Your message has been received.');
+            return redirect()->to(PublicUrl::route('home').'#contact')->with('contact_success', __('Your message has been received.'));
         }
 
         $data = $request->validate([
@@ -23,6 +24,6 @@ class ContactController
 
         ContactMessage::create($data);
 
-        return redirect()->to(route('home').'#contact')->with('contact_success', 'Your message has been received.');
+        return redirect()->to(PublicUrl::route('home').'#contact')->with('contact_success', __('Your message has been received.'));
     }
 }

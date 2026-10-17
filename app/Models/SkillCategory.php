@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPublicTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SkillCategory extends Model
 {
-    protected $fillable = ['name', 'slug', 'sort_order', 'is_visible'];
+    use HasPublicTranslations;
+
+    protected $fillable = ['name', 'slug', 'sort_order', 'is_visible', 'name_fa'];
 
     protected function casts(): array
     {

@@ -4,14 +4,14 @@ One Laravel application serves Blade public pages and a Filament admin panel. Bo
 
 ## Application shape
 
-- Public routes: `/`, `/projects`, `/projects/{slug}`, `/blog`, `/blog/{slug}`, contact submission, resume downloads, and `/sitemap.xml`.
-- Public pages emit page-specific title, description, canonical and sharing metadata. The sitemap lists only currently published project and article details; robots.txt advertises it. The configured default sharing image is served through a checked route from private storage.
+- Public routes: Persian `/`, `/projects`, `/projects/{slug}`, `/blog`, `/blog/{slug}` and matching English routes under `/en`; contact submission has both locale routes. Resume downloads remain at `/resume/{language}` and `/sitemap.xml` is at the root.
+- Public pages emit page-specific title, description, canonical and sharing metadata. Translated route pairs emit reciprocal `hreflang` links. The sitemap includes both language home/list URLs, published English details, and translated Persian details; robots.txt advertises it. The configured default sharing image is served through a checked route from private storage.
 - Controllers handle page queries and explicit download/submission actions; Blade views/components render content.
 - Filament resources manage collections. Filament pages manage singleton profile/site settings and resume files.
 - Eloquent relationships handle categories, technologies, images, and content. Published scopes and route lookup prevent draft exposure.
 - Contact messages persist in the database. Apply validation, Laravel rate limiting, and a honeypot field; no mail dependency initially.
 - Uploaded images and resumes use Laravel Storage. Validate MIME, size, and image dimensions; downloads are served through controlled routes. Project and article images use private local disks and routes that verify their parent content is published. Resume PDFs use a private disk, verified signature, and controlled download route. Project long-form fields are plain text and escaped in Blade. Article content uses Filament's rich editor with attachments disabled and is rendered through Filament's sanitized `RichContentRenderer`.
-- Use Laravel localization files for UI strings when introduced. English is the only initial locale; choose CSS/layout patterns compatible with later RTL.
+- Public UI strings use Laravel translations. Persian routes set `fa` and RTL; English routes set `en` and LTR. Public Eloquent text fields have nullable Persian counterparts; untranslated primary records are hidden from Persian listings/details. Filament admin remains English.
 
 ## Version decision
 

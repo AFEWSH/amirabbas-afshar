@@ -34,7 +34,7 @@ class ExperienceProjectsTest extends TestCase
         Education::create(['institution' => 'First School', 'sort_order' => 1, 'is_visible' => true]);
         Education::create(['institution' => 'Hidden School', 'is_visible' => false]);
 
-        $this->get('/')->assertOk()
+        $this->get('/en')->assertOk()
             ->assertSeeInOrder(['First Role', 'Second Role'])
             ->assertSeeInOrder(['First School', 'Second School'])
             ->assertDontSee('Hidden Role')
@@ -55,11 +55,11 @@ class ExperienceProjectsTest extends TestCase
         $visibleImage = $published->images()->create(['path' => 'projects/published.png', 'alt_text' => 'Published screenshot']);
         $privateImage = $draft->images()->create(['path' => 'projects/draft.png', 'alt_text' => 'Draft screenshot']);
 
-        $this->get('/')->assertOk()->assertSee('Published Project')->assertDontSee('Draft Project')->assertDontSee('Future Project');
-        $this->get('/projects')->assertOk()->assertSee('Published Project')->assertDontSee('Draft Project')->assertDontSee('Future Project');
-        $this->get('/projects/published-project')->assertOk()->assertSee('Laravel')->assertSee('Published screenshot')->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false)->assertDontSee('GitHub ↗')->assertDontSee('Live site ↗');
-        $this->get('/projects/draft-project')->assertNotFound();
-        $this->get('/projects/future-project')->assertNotFound();
+        $this->get('/en')->assertOk()->assertSee('Published Project')->assertDontSee('Draft Project')->assertDontSee('Future Project');
+        $this->get('/en/projects')->assertOk()->assertSee('Published Project')->assertDontSee('Draft Project')->assertDontSee('Future Project');
+        $this->get('/en/projects/published-project')->assertOk()->assertSee('Laravel')->assertSee('Published screenshot')->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false)->assertDontSee('GitHub ↗')->assertDontSee('Live site ↗');
+        $this->get('/en/projects/draft-project')->assertNotFound();
+        $this->get('/en/projects/future-project')->assertNotFound();
         $this->get('/project-images/'.$visibleImage->id)->assertOk()->assertHeader('X-Content-Type-Options', 'nosniff')->assertHeader('Cache-Control', 'no-store, private');
         $this->get('/project-images/'.$privateImage->id)->assertNotFound();
     }
@@ -68,7 +68,7 @@ class ExperienceProjectsTest extends TestCase
     {
         Project::create(['title' => 'Linked Project', 'slug' => 'linked-project', 'summary' => 'Summary', 'status' => 'published', 'published_at' => now()->subMinute(), 'github_url' => 'https://github.com/example', 'live_url' => 'https://example.test']);
 
-        $this->get('/projects/linked-project')->assertOk()->assertSee('GitHub ↗')->assertSee('Live site ↗');
+        $this->get('/en/projects/linked-project')->assertOk()->assertSee('GitHub ↗')->assertSee('Live site ↗');
     }
 
     public function test_phase_four_admin_pages_require_admin_access(): void
@@ -122,7 +122,7 @@ class ExperienceProjectsTest extends TestCase
         $project = Project::where('slug', 'real-project')->firstOrFail();
         $this->assertSame($category->id, $project->project_category_id);
         $this->assertTrue($project->technologies->contains($technology));
-        $this->get('/projects/real-project')->assertOk();
+        $this->get('/en/projects/real-project')->assertOk();
 
         Livewire::test(ManageProjects::class)->callTableAction('edit', $project, [
             'title' => 'Updated Project', 'slug' => 'real-project', 'summary' => 'Updated summary',
@@ -130,7 +130,7 @@ class ExperienceProjectsTest extends TestCase
             'status' => 'draft', 'published_at' => now()->subMinute()->format('Y-m-d H:i:s'), 'sort_order' => 0,
         ])->assertHasNoErrors();
         $this->assertDatabaseHas('projects', ['id' => $project->id, 'title' => 'Updated Project', 'status' => 'draft']);
-        $this->get('/projects/real-project')->assertNotFound();
+        $this->get('/en/projects/real-project')->assertNotFound();
     }
 
     public function test_project_image_upload_rejects_invalid_type_and_dimensions(): void
@@ -171,7 +171,7 @@ class ExperienceProjectsTest extends TestCase
         $image = ProjectImage::firstOrFail();
         $this->assertSame('Application screenshot', $image->alt_text);
         Storage::disk('project_images')->assertExists($image->path);
-        $this->get('/projects/image-project')->assertOk()->assertSee('Application screenshot');
+        $this->get('/en/projects/image-project')->assertOk()->assertSee('Application screenshot');
         $this->get('/project-images/'.$image->id)->assertOk();
     }
 

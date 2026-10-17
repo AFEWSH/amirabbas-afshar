@@ -31,7 +31,7 @@ class ProfileAndSkillsTest extends TestCase
         Skill::create(['skill_category_id' => $visible->id, 'name' => 'Hidden Skill', 'proficiency' => 'familiar', 'is_visible' => false]);
         Skill::create(['skill_category_id' => $hidden->id, 'name' => 'Private Skill', 'proficiency' => 'intermediate', 'is_visible' => true]);
 
-        $this->get('/')->assertOk()
+        $this->get('/en')->assertOk()
             ->assertSee('Configured Name')
             ->assertSee('Configured introduction')
             ->assertSee('Configured background')
@@ -48,16 +48,16 @@ class ProfileAndSkillsTest extends TestCase
     public function test_empty_home_has_graceful_profile_and_skill_states(): void
     {
         $this->get('/')->assertOk()
-            ->assertSee('Profile details have not been added yet.')
-            ->assertSee('No visible skills have been added yet.');
+            ->assertSee('اطلاعات پروفایل هنوز ثبت نشده است.')
+            ->assertSee('هنوز مهارتی برای نمایش ثبت نشده است.');
     }
 
     public function test_configured_identity_is_shared_across_public_page_shells(): void
     {
         Profile::create(['full_name' => 'Configured Name', 'title' => 'Configured Title']);
 
-        $this->get('/projects')->assertOk()->assertSee('Configured Name')->assertSee('Configured Title');
-        $this->get('/blog')->assertOk()->assertSee('Configured Name')->assertSee('Configured Title');
+        $this->get('/en/projects')->assertOk()->assertSee('Configured Name')->assertSee('Configured Title');
+        $this->get('/en/blog')->assertOk()->assertSee('Configured Name')->assertSee('Configured Title');
     }
 
     public function test_only_admin_can_access_profile_and_collection_pages(): void

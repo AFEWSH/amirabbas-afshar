@@ -31,6 +31,7 @@ class SkillResource extends Resource
             ->components([
                 Select::make('skill_category_id')->label('Category')->relationship('category', 'name')->searchable()->preload()->required(),
                 TextInput::make('name')->required()->maxLength(255),
+                TextInput::make('name_fa')->label('Name (Persian)')->maxLength(255),
                 TextInput::make('icon_key')->maxLength(255)->helperText('Optional icon identifier for later use.'),
                 Select::make('proficiency')->options([
                     'familiar' => 'Familiar',

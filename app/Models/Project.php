@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPublicTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
-    protected $fillable = ['project_category_id', 'title', 'slug', 'summary', 'body', 'role', 'challenges', 'solutions', 'github_url', 'live_url', 'is_featured', 'status', 'published_at', 'sort_order', 'seo_title', 'seo_description'];
+    use HasPublicTranslations;
+
+    protected $fillable = ['project_category_id', 'title', 'slug', 'summary', 'body', 'role', 'challenges', 'solutions', 'github_url', 'live_url', 'is_featured', 'status', 'published_at', 'sort_order', 'seo_title', 'seo_description', 'title_fa', 'summary_fa', 'body_fa', 'role_fa', 'challenges_fa', 'solutions_fa', 'seo_title_fa', 'seo_description_fa'];
 
     protected function casts(): array
     {

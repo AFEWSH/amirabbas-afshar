@@ -22,18 +22,18 @@ class ContactAndSettingsTest extends TestCase
 
     public function test_contact_form_validates_and_saves_a_message(): void
     {
-        $this->get('/')->assertOk()->assertSee('name="_token"', false)->assertSee('Send message');
+        $this->get('/')->assertOk()->assertSee('name="_token"', false)->assertSee('ارسال پیام');
 
         $this->post('/contact', ['name' => 'A', 'email' => 'bad', 'subject' => '', 'message' => 'short'])
             ->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
         $this->assertDatabaseCount('contact_messages', 0);
-        $this->get('/')->assertOk()->assertSee('Please correct the following:');
+        $this->get('/')->assertOk()->assertSee('لطفاً خطاهای زیر را برطرف کنید:');
 
         $this->post('/contact', $this->validMessage())
             ->assertRedirect(route('home').'#contact')
             ->assertSessionHas('contact_success');
         $this->assertDatabaseHas('contact_messages', ['name' => 'Visitor', 'email' => 'visitor@example.test', 'read_at' => null]);
-        $this->get('/')->assertOk()->assertSee('Your message has been received.');
+        $this->get('/')->assertOk()->assertSee('پیام شما دریافت شد.');
     }
 
     public function test_honeypot_discards_submission_and_rate_limit_gives_feedback(): void
@@ -82,7 +82,7 @@ class ContactAndSettingsTest extends TestCase
             ->set('data.site_name', 'Updated Portfolio')
             ->call('save')->assertHasNoErrors();
         $this->assertSame(1, SiteSetting::count());
-        $this->get('/')->assertOk()->assertSee('Updated Portfolio')->assertSee('Configured description');
+        $this->get('/en')->assertOk()->assertSee('Updated Portfolio')->assertSee('Configured description');
     }
 
     public function test_only_existing_pdf_resumes_are_linked_and_downloaded(): void
@@ -94,13 +94,15 @@ class ContactAndSettingsTest extends TestCase
         ResumeFile::create(['language' => 'en', 'path' => 'en/resume.pdf', 'original_name' => 'my-resume.pdf']);
         ResumeFile::create(['language' => 'fa', 'path' => 'fa/not-a-pdf.pdf', 'original_name' => 'bad.pdf']);
 
-        $this->get('/')->assertOk()->assertSee('Download resume (EN)')->assertDontSee('Download resume (FA)');
-        $this->get('/resume/en')->assertOk()->assertHeader('Content-Type', 'application/pdf')->assertHeader('X-Content-Type-Options', 'nosniff');
+        $this->get('/en')->assertOk()->assertSee('Download resume')->assertSee('href="'.route('resume.download', 'en').'"', false)
+            ->assertDontSee('href="'.route('resume.download', 'fa').'"', false);
+        $this->get('/')->assertOk()->assertDontSee('دریافت رزومه');
+        $this->get('/resume/en')->assertOk()->assertHeader('Content-Type', 'application/pdf')->assertHeader('Content-Language', 'en')->assertHeader('X-Content-Type-Options', 'nosniff');
         $this->get('/resume/fa')->assertNotFound();
         $this->get('/resume/other')->assertNotFound();
 
         Storage::disk('resumes')->delete('en/resume.pdf');
-        $this->get('/')->assertDontSee('Download resume (EN)');
+        $this->get('/en')->assertDontSee('Download resume');
         $this->get('/resume/en')->assertNotFound();
     }
 

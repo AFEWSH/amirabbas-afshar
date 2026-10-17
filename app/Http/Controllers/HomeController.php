@@ -18,18 +18,19 @@ class HomeController
     {
         return view('home', [
             'profile' => Profile::find(1),
-            'socialLinks' => SocialLink::visible()->orderBy('sort_order')->orderBy('id')->get(),
+            'socialLinks' => SocialLink::visible()->availableInPublicLocale('label')->orderBy('sort_order')->orderBy('id')->get(),
             'skillCategories' => SkillCategory::visible()
-                ->whereHas('skills', fn ($query) => $query->visible())
-                ->with(['skills' => fn ($query) => $query->visible()->orderBy('sort_order')->orderBy('id')])
+                ->availableInPublicLocale('name')
+                ->whereHas('skills', fn ($query) => $query->visible()->availableInPublicLocale('name'))
+                ->with(['skills' => fn ($query) => $query->visible()->availableInPublicLocale('name')->orderBy('sort_order')->orderBy('id')])
                 ->orderBy('sort_order')->orderBy('id')->get(),
-            'workExperiences' => WorkExperience::visible()->orderBy('sort_order')->orderByDesc('start_date')->orderBy('id')->get(),
-            'educations' => Education::visible()->orderBy('sort_order')->orderByDesc('start_date')->orderBy('id')->get(),
-            'featuredProjects' => Project::published()->where('is_featured', true)
+            'workExperiences' => WorkExperience::visible()->availableInPublicLocale('company')->availableInPublicLocale('job_title')->orderBy('sort_order')->orderByDesc('start_date')->orderBy('id')->get(),
+            'educations' => Education::visible()->availableInPublicLocale('institution')->orderBy('sort_order')->orderByDesc('start_date')->orderBy('id')->get(),
+            'featuredProjects' => Project::published()->availableInPublicLocale('title')->availableInPublicLocale('summary')->where('is_featured', true)
                 ->with(['category', 'technologies', 'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id')])
                 ->orderBy('sort_order')->orderByDesc('published_at')->orderBy('id')->limit(3)->get(),
-            'latestPosts' => BlogPost::published()->with('category')->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get(),
-            'resumes' => ResumeFile::whereIn('language', ['en', 'fa'])->get()->filter(fn (ResumeFile $resume): bool => $resume->isAvailable())->sortBy('language'),
+            'latestPosts' => BlogPost::published()->availableInPublicLocale('title')->availableInPublicLocale('excerpt')->availableInPublicLocale('content')->with('category')->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get(),
+            'resumes' => ResumeFile::where('language', app()->getLocale())->get()->filter(fn (ResumeFile $resume): bool => $resume->isAvailable()),
         ]);
     }
 }

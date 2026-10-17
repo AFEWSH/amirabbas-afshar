@@ -23,3 +23,9 @@ All tables use an `id` primary key and timestamps unless noted. Add foreign keys
 | `site_settings` | site_name, default_seo_description, og_image_path | Singleton; keep narrow and extend only when needed. |
 
 Use normalized category and technology relations. Do not add seed data claiming real experience or skill proficiency. Store file paths, not binary files. Index `status` with `published_at`, category foreign keys, `sort_order` where queried, and contact `created_at`.
+
+## Public bilingual content extension
+
+The additive `2026_10_17_000005_add_persian_public_content.php` migration adds nullable `_fa` counterparts to public text fields in profile, site settings, social links, skill categories and skills, experience, education, project categories and technologies, projects and their image alt text, blog categories and posts. Existing columns remain the English source and existing data is preserved. Slugs, dates, URLs, status, relationships, and uploads are shared between languages.
+
+On Persian routes, projects require `title_fa` and `summary_fa`; articles require `title_fa`, `excerpt_fa`, and `content_fa`. Untranslated records are omitted from Persian lists and details return 404. Other untranslated optional fields are omitted. English routes continue to use the original columns. Both languages still obey the existing publication and visibility rules.

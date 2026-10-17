@@ -50,6 +50,12 @@ class BlogPostResource extends Resource
                 DateTimePicker::make('published_at')->label('Publish at')->required(fn (Get $get): bool => $get('status') === 'published'),
                 TextInput::make('seo_title')->maxLength(255),
                 TextInput::make('seo_description')->maxLength(255),
+                TextInput::make('title_fa')->label('Title (Persian)')->maxLength(255),
+                Textarea::make('excerpt_fa')->label('Excerpt (Persian)')->rows(4),
+                RichEditor::make('content_fa')->label('Content (Persian)')->fileAttachments(false)->toolbarButtons([['bold', 'italic', 'link'], ['h2', 'h3'], ['bulletList', 'orderedList', 'blockquote', 'codeBlock']])->columnSpanFull(),
+                TextInput::make('featured_image_alt_fa')->label('Featured Image Alt (Persian)')->maxLength(255),
+                TextInput::make('seo_title_fa')->label('Seo Title (Persian)')->maxLength(255),
+                TextInput::make('seo_description_fa')->label('Seo Description (Persian)')->maxLength(255),
             ]);
     }
 

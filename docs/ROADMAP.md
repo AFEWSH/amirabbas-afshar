@@ -33,3 +33,23 @@ Add contact form/messages, resume files/downloads, and site settings. Acceptance
 ## Phase 7 — Readiness
 
 Add page SEO/OG/canonical metadata, sitemap, robots.txt; review security, query efficiency, images, accessibility and deployment configuration. Acceptance: unique titles/descriptions and sitemap cover public content only; production assets build; focused suite passes; deployment instructions contain no secrets.
+
+## Approved visual refresh
+
+This work refreshes the existing public interface to follow `docs/homepage-reference.png`. It is separate from the completed feature delivery phases above. Keep the existing Persian/English routes, content rules, and admin-managed data.
+
+### Visual Phase 1 — Shared visual foundation (complete)
+
+Update shared design tokens, page background, header/navigation, buttons, and footer. Preserve RTL/LTR behavior, the language switch, keyboard navigation, and mobile access. Acceptance: shared layout builds and existing public route tests pass in both locales.
+
+### Visual Phase 2 — Home page (complete)
+
+Restyle the home sections to match the reference's hero, selected projects, skills, about, experience, articles, and contact blocks. Use only configured profile and published content; retain graceful empty states. Acceptance: responsive Persian and English home pages render correctly and remain accessible.
+
+### Visual Phase 3 — Internal pages (complete)
+
+Restyle project and article indexes, detail pages, cards, metadata, and pagination to use the shared visual language. Acceptance: both locales and all existing publication/translation rules continue to work.
+
+### Visual Phase 4 — Review (complete)
+
+Review desktop/mobile layouts, RTL/LTR, contrast, keyboard focus, reduced motion, and page links. Run relevant tests and production build, then record completion in `docs/PROGRESS.md`.

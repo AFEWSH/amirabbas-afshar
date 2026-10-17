@@ -51,11 +51,20 @@ class ProjectResource extends Resource
                 TextInput::make('sort_order')->numeric()->integer()->minValue(0)->default(0)->required(),
                 TextInput::make('seo_title')->maxLength(255),
                 TextInput::make('seo_description')->maxLength(255),
+                TextInput::make('title_fa')->label('Title (Persian)')->maxLength(255),
+                Textarea::make('summary_fa')->label('Summary (Persian)')->rows(4),
+                Textarea::make('body_fa')->label('Body (Persian)')->rows(4),
+                Textarea::make('role_fa')->label('Role (Persian)')->rows(4),
+                Textarea::make('challenges_fa')->label('Challenges (Persian)')->rows(4),
+                Textarea::make('solutions_fa')->label('Solutions (Persian)')->rows(4),
+                TextInput::make('seo_title_fa')->label('Seo Title (Persian)')->maxLength(255),
+                TextInput::make('seo_description_fa')->label('Seo Description (Persian)')->maxLength(255),
                 Repeater::make('images')->relationship()->orderColumn('sort_order')->schema([
                     FileUpload::make('path')->label('Image')->disk('project_images')->directory('projects')->visibility('private')
                         ->image()->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])->maxSize(2048)
                         ->rule('dimensions:min_width=320,min_height=180,max_width=4000,max_height=4000')->required(),
                     TextInput::make('alt_text')->required()->maxLength(255),
+                    TextInput::make('alt_text_fa')->label('Alt text (Persian)')->maxLength(255),
                 ])->label('Project images')->defaultItems(0)->columnSpanFull(),
             ]);
     }

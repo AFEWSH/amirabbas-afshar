@@ -30,13 +30,13 @@ class ArticlesTest extends TestCase
         BlogPost::create(['title' => 'Future Article', 'slug' => 'future-article', 'excerpt' => 'Future excerpt', 'content' => '<p>Future body</p>', 'status' => 'published', 'published_at' => now()->addDay()]);
         BlogPost::create(['title' => 'Undated Article', 'slug' => 'undated-article', 'excerpt' => 'Undated excerpt', 'content' => '<p>Undated body</p>', 'status' => 'published']);
 
-        $this->get('/')->assertOk()->assertSee('Published Article')->assertDontSee('Draft Article')->assertDontSee('Future Article');
-        $this->get('/blog')->assertOk()->assertSee('Published Article')->assertSee('Engineering')->assertDontSee('Draft Article')->assertDontSee('Future Article')->assertDontSee('Undated Article');
-        $response = $this->get('/blog/'.$published->slug)->assertOk()->assertSee('Safe heading')->assertSee('Hello')->assertSee('Engineering');
+        $this->get('/en')->assertOk()->assertSee('Published Article')->assertDontSee('Draft Article')->assertDontSee('Future Article');
+        $this->get('/en/blog')->assertOk()->assertSee('Published Article')->assertSee('Engineering')->assertDontSee('Draft Article')->assertDontSee('Future Article')->assertDontSee('Undated Article');
+        $response = $this->get('/en/blog/'.$published->slug)->assertOk()->assertSee('Safe heading')->assertSee('Hello')->assertSee('Engineering');
         $response->assertDontSee('<script>', false)->assertDontSee('javascript:alert', false);
-        $this->get('/blog/draft-article')->assertNotFound();
-        $this->get('/blog/future-article')->assertNotFound();
-        $this->get('/blog/undated-article')->assertNotFound();
+        $this->get('/en/blog/draft-article')->assertNotFound();
+        $this->get('/en/blog/future-article')->assertNotFound();
+        $this->get('/en/blog/undated-article')->assertNotFound();
     }
 
     public function test_featured_image_route_hides_drafts_and_missing_images(): void
@@ -48,7 +48,7 @@ class ArticlesTest extends TestCase
         $draft = BlogPost::create(['title' => 'Draft', 'slug' => 'draft', 'excerpt' => 'Excerpt', 'content' => '<p>Body</p>', 'featured_image_path' => 'featured/draft.png', 'status' => 'draft']);
         $missing = BlogPost::create(['title' => 'Missing', 'slug' => 'missing', 'excerpt' => 'Excerpt', 'content' => '<p>Body</p>', 'featured_image_path' => 'featured/missing.png', 'status' => 'published', 'published_at' => now()->subMinute()]);
 
-        $this->get('/blog/'.$published->slug)->assertOk()->assertSee('A dashboard screenshot');
+        $this->get('/en/blog/'.$published->slug)->assertOk()->assertSee('A dashboard screenshot');
         $this->get('/blog-images/'.$published->id)->assertOk()->assertHeader('X-Content-Type-Options', 'nosniff')->assertHeader('Cache-Control', 'no-store, private');
         $this->get('/blog-images/'.$draft->id)->assertNotFound();
         $this->get('/blog-images/'.$missing->id)->assertNotFound();
@@ -86,7 +86,7 @@ class ArticlesTest extends TestCase
         $post = BlogPost::where('slug', 'article')->firstOrFail();
         $this->assertSame($category->id, $post->blog_category_id);
         $this->assertSame('Search title', $post->seo_title);
-        $this->get('/blog/article')->assertOk();
+        $this->get('/en/blog/article')->assertOk();
 
         Livewire::test(ManageBlogPosts::class)->callTableAction('edit', $post, [
             'title' => 'Updated Article', 'slug' => 'article', 'blog_category_id' => $category->id,
@@ -94,7 +94,7 @@ class ArticlesTest extends TestCase
             'published_at' => now()->subMinute()->format('Y-m-d H:i:s'),
         ])->assertHasNoErrors();
         $this->assertDatabaseHas('blog_posts', ['id' => $post->id, 'title' => 'Updated Article', 'status' => 'draft']);
-        $this->get('/blog/article')->assertNotFound();
+        $this->get('/en/blog/article')->assertNotFound();
     }
 
     public function test_featured_image_upload_validates_type_dimensions_and_size(): void

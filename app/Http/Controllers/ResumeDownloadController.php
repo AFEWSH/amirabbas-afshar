@@ -17,6 +17,7 @@ class ResumeDownloadController
 
         return Storage::disk('resumes')->download($resume->path, "resume-{$language}.pdf", [
             'Content-Type' => 'application/pdf',
+            'Content-Language' => $language,
             'X-Content-Type-Options' => 'nosniff',
             'Cache-Control' => 'private, no-store',
         ]);

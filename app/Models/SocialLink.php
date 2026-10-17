@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPublicTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class SocialLink extends Model
 {
-    protected $fillable = ['label', 'url', 'icon_key', 'sort_order', 'is_visible'];
+    use HasPublicTranslations;
+
+    protected $fillable = ['label', 'url', 'icon_key', 'sort_order', 'is_visible', 'label_fa'];
 
     protected function casts(): array
     {

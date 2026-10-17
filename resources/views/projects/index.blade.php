@@ -1,13 +1,20 @@
-<x-layouts.public :title="$projects->currentPage() === 1 ? 'Projects' : 'Projects — Page '.$projects->currentPage()" :description="$projects->currentPage() === 1 ? 'Browse published projects and selected work.' : 'Browse published projects and selected work. Page '.$projects->currentPage().'.'" :canonical="$projects->currentPage() === 1 ? route('projects.index') : $projects->url($projects->currentPage())">
-    <section class="site-container py-20 sm:py-28">
-        <p class="mb-4 text-xs font-semibold uppercase tracking-[.2em] text-accent">Portfolio / Projects</p>
-        <h1 class="text-5xl font-semibold tracking-tight sm:text-6xl">Projects<span class="text-accent">.</span></h1>
-        <p class="mt-6 max-w-2xl text-lg leading-8 text-muted">Selected published work.</p>
+<x-layouts.public :title="$projects->currentPage() === 1 ? __('Projects') : __('Projects').' — '.__('Page :page', ['page' => $projects->currentPage()])" :description="$projects->currentPage() === 1 ? __('Browse published projects and selected work.') : __('Browse published projects and selected work.').' '.__('Page :page', ['page' => $projects->currentPage()]).'.'" :canonical="$projects->currentPage() === 1 ? \App\Support\PublicUrl::route('projects.index') : $projects->url($projects->currentPage())">
+    <div class="site-container inner-page">
+        <header class="listing-hero listing-hero-projects">
+            <div class="listing-hero-copy">
+                <a class="listing-back-link" href="{{ \App\Support\PublicUrl::route('home') }}"><span aria-hidden="true">{{ app()->getLocale() === 'fa' ? '→' : '←' }}</span> {{ __('Home') }}</a>
+                <p class="inner-eyebrow"><span></span>{{ __('Selected work') }}</p>
+                <h1>{{ __('Projects') }}<span>.</span></h1>
+                <p>{{ __('Browse published projects and selected work.') }}</p>
+            </div>
+            <div class="listing-hero-art listing-project-art" aria-hidden="true"><span>&lt;/&gt;</span><i></i><i></i></div>
+        </header>
+
         @if($projects->isEmpty())
-            <div class="mt-14 rounded-2xl border border-dashed border-line bg-surface p-8 text-muted">No published projects yet.</div>
+            <div class="inner-empty"><span class="empty-mark" aria-hidden="true">✳</span><p>{{ __('No published projects yet.') }}</p></div>
         @else
-            <div class="mt-14 grid gap-5 md:grid-cols-2">@foreach($projects as $project)<x-project-card :project="$project" />@endforeach</div>
-            <div class="mt-10">{{ $projects->links() }}</div>
+            <div class="inner-card-grid project-list-grid">@foreach($projects as $project)<x-project-card :project="$project" />@endforeach</div>
+            @if($projects->hasPages())<div class="inner-pagination">{{ $projects->links() }}</div>@endif
         @endif
-    </section>
+    </div>
 </x-layouts.public>

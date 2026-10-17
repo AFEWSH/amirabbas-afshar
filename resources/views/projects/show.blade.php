@@ -1,26 +1,44 @@
-<x-layouts.public :title="$project->seo_title ?: $project->title" :description="$project->seo_description ?: $project->summary" :canonical="route('projects.show', $project->slug)" :image="$project->images->first() && \Illuminate\Support\Facades\Storage::disk('project_images')->exists($project->images->first()->path) ? route('project-images.show', $project->images->first()) : null">
-    <article class="site-container py-20 sm:py-28">
-        <a class="text-sm font-medium text-accent hover:underline" href="{{ route('projects.index') }}">← All projects</a>
-        @if($project->category)<p class="mt-14 text-xs font-semibold uppercase tracking-[.2em] text-accent">{{ $project->category->name }}</p>@endif
-        <h1 class="mt-4 text-5xl font-semibold tracking-tight sm:text-6xl">{{ $project->title }}<span class="text-accent">.</span></h1>
-        <p class="mt-7 max-w-3xl text-xl leading-8 text-muted">{{ $project->summary }}</p>
-        <div class="mt-8 flex flex-wrap gap-3">
-            @if($project->github_url && preg_match('/^https?:\/\//i', $project->github_url))<a class="button-secondary" href="{{ $project->github_url }}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>@endif
-            @if($project->live_url && preg_match('/^https?:\/\//i', $project->live_url))<a class="button-secondary" href="{{ $project->live_url }}" target="_blank" rel="noopener noreferrer">Live site ↗</a>@endif
+<x-layouts.public :title="$project->publicText('seo_title') ?: $project->publicText('title')" :description="$project->publicText('seo_description') ?: $project->publicText('summary')" :canonical="\App\Support\PublicUrl::route('projects.show', $project->slug)" :image="$project->images->first() && \Illuminate\Support\Facades\Storage::disk('project_images')->exists($project->images->first()->path) ? route('project-images.show', $project->images->first()) : null">
+    <article class="site-container inner-page project-detail">
+        <div class="detail-topline">
+            <a class="listing-back-link" href="{{ \App\Support\PublicUrl::route('projects.index') }}"><span aria-hidden="true">{{ app()->getLocale() === 'fa' ? '→' : '←' }}</span> {{ __('All projects') }}</a>
         </div>
-        @if($project->technologies->isNotEmpty())
-            <div class="mt-10 flex flex-wrap gap-2" aria-label="Technologies">
-                @foreach($project->technologies as $technology)<span class="rounded-full border border-line px-3 py-1 text-sm text-muted">{{ $technology->name }}</span>@endforeach
+
+        <header class="detail-hero detail-hero-projects">
+            <div class="detail-hero-copy">
+                @if($project->category?->publicText('name'))<p class="inner-eyebrow"><span></span>{{ $project->category->publicText('name') }}</p>@endif
+                <h1>{{ $project->publicText('title') }}<span>.</span></h1>
+                <p class="detail-lead">{{ $project->publicText('summary') }}</p>
+                <div class="mt-7 flex flex-wrap gap-3">
+                    @if($project->github_url && preg_match('/^https?:\/\//i', $project->github_url))<a class="button-secondary" href="{{ $project->github_url }}" target="_blank" rel="noopener noreferrer">{{ __('GitHub') }} ↗</a>@endif
+                    @if($project->live_url && preg_match('/^https?:\/\//i', $project->live_url))<a class="button-primary" href="{{ $project->live_url }}" target="_blank" rel="noopener noreferrer">{{ __('Live site') }} ↗</a>@endif
+                </div>
+                @if($project->technologies->contains(fn ($technology) => $technology->publicText('name')))
+                    <div class="detail-tags" aria-label="{{ __('Technologies') }}">
+                        @foreach($project->technologies as $technology)@if($technology->publicText('name'))<span>{{ $technology->publicText('name') }}</span>@endif @endforeach
+                    </div>
+                @endif
             </div>
-        @endif
+            <div class="detail-hero-mark" aria-hidden="true">&lt;/&gt;</div>
+        </header>
+
         @if($project->images->isNotEmpty())
-            <div class="mt-14 grid gap-6">
-                @foreach($project->images as $image)<figure><img class="w-full rounded-xl border border-line object-cover" src="{{ route('project-images.show', $image) }}" alt="{{ $image->alt_text }}" loading="lazy"></figure>@endforeach
+            <div class="project-gallery">
+                @foreach($project->images as $image)
+                    <figure class="{{ $loop->first ? 'project-gallery-featured' : '' }}"><img src="{{ route('project-images.show', $image) }}" alt="{{ $image->publicText('alt_text') ?: $project->publicText('title') }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async"></figure>
+                @endforeach
             </div>
         @endif
-        <div class="mt-14 max-w-3xl space-y-10 border-t border-line pt-9 leading-8 text-muted">
-            @foreach(['body' => 'Overview', 'role' => 'My role', 'challenges' => 'Challenges', 'solutions' => 'Solutions'] as $field => $heading)
-                @if($project->$field)<section><h2 class="text-2xl font-semibold text-paper">{{ $heading }}</h2><p class="mt-4 whitespace-pre-line">{{ $project->$field }}</p></section>@endif
+
+        <div class="detail-sections">
+            @foreach(['body' => __('Overview'), 'role' => __('My role'), 'challenges' => __('Challenges'), 'solutions' => __('Solutions')] as $field => $heading)
+                @if($project->publicText($field))
+                    <section class="detail-content-card">
+                        <p class="inner-eyebrow"><span></span>{{ $heading }}</p>
+                        <h2>{{ $heading }}</h2>
+                        <p>{{ $project->publicText($field) }}</p>
+                    </section>
+                @endif
             @endforeach
         </div>
     </article>

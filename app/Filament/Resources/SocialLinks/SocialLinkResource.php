@@ -29,6 +29,7 @@ class SocialLinkResource extends Resource
         return $schema
             ->components([
                 TextInput::make('label')->required()->maxLength(255),
+                TextInput::make('label_fa')->label('Label (Persian)')->maxLength(255),
                 TextInput::make('url')->required()->url()->rule('url:http,https')->maxLength(2048),
                 TextInput::make('icon_key')->maxLength(255)->helperText('Optional icon identifier for later use.'),
                 TextInput::make('sort_order')->numeric()->integer()->minValue(0)->default(0)->required(),

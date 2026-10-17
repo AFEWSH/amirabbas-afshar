@@ -36,6 +36,14 @@ class EditProfile extends Page
             Textarea::make('interests')->rows(5),
             Textarea::make('approach')->rows(5),
             TextInput::make('contact_email')->email()->maxLength(255),
+            TextInput::make('full_name_fa')->label('Full Name (Persian)')->maxLength(255),
+            TextInput::make('title_fa')->label('Title (Persian)')->maxLength(255),
+            TextInput::make('specialization_fa')->label('Specialization (Persian)')->maxLength(255),
+            Textarea::make('introduction_fa')->label('Introduction (Persian)')->rows(4),
+            Textarea::make('background_fa')->label('Background (Persian)')->rows(4),
+            Textarea::make('expertise_fa')->label('Expertise (Persian)')->rows(4),
+            Textarea::make('interests_fa')->label('Interests (Persian)')->rows(4),
+            Textarea::make('approach_fa')->label('Approach (Persian)')->rows(4),
         ]);
     }
 

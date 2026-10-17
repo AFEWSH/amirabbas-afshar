@@ -11,9 +11,9 @@ class PublicPagesTest extends TestCase
 
     public function test_public_page_shells_render_with_labeled_placeholders(): void
     {
-        $this->get('/')->assertOk()->assertSee('Placeholder introduction');
-        $this->get('/blog')->assertOk()->assertSee('No articles have been published yet.');
-        $this->get('/projects')->assertOk()->assertSee('No published projects yet.');
+        $this->get('/')->assertOk()->assertSee('متن معرفی موقت است');
+        $this->get('/blog')->assertOk()->assertSee('هنوز مقاله‌ای منتشر نشده است.');
+        $this->get('/projects')->assertOk()->assertSee('هنوز پروژه‌ای منتشر نشده است.');
     }
 
     public function test_sample_project_is_gone_and_unknown_slugs_do_not_render(): void
@@ -28,8 +28,8 @@ class PublicPagesTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('Skip to content')
-            ->assertSee('aria-label="Main navigation"', false)
+            ->assertSee('پرش به محتوا')
+            ->assertSee('aria-label="ناوبری اصلی"', false)
             ->assertSee('href="'.route('projects.index').'"', false)
             ->assertSee('href="'.route('blog.index').'"', false);
     }

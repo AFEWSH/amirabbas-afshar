@@ -30,6 +30,8 @@ class SiteSettings extends Page
         return $schema->statePath('data')->components([
             TextInput::make('site_name')->maxLength(255),
             Textarea::make('default_seo_description')->maxLength(255)->rows(3),
+            TextInput::make('site_name_fa')->label('Site Name (Persian)')->maxLength(255),
+            Textarea::make('default_seo_description_fa')->label('Default Seo Description (Persian)')->maxLength(255)->rows(3),
             FileUpload::make('og_image_path')->label('Default sharing image')->disk('site_assets')->directory('og')->visibility('private')
                 ->image()->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])->maxSize(2048)
                 ->rule('dimensions:min_width=320,min_height=180,max_width=4000,max_height=4000'),

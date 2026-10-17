@@ -10,7 +10,7 @@ class ProjectController
     public function index(): View
     {
         return view('projects.index', [
-            'projects' => Project::published()
+            'projects' => Project::published()->availableInPublicLocale('title')->availableInPublicLocale('summary')
                 ->with(['category', 'technologies', 'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id')])
                 ->orderBy('sort_order')->orderByDesc('published_at')->orderBy('id')
                 ->paginate(12),
@@ -19,7 +19,7 @@ class ProjectController
 
     public function show(string $slug): View
     {
-        $project = Project::published()->where('slug', $slug)
+        $project = Project::published()->availableInPublicLocale('title')->availableInPublicLocale('summary')->where('slug', $slug)
             ->with(['category', 'technologies', 'images' => fn ($query) => $query->orderBy('sort_order')->orderBy('id')])
             ->firstOrFail();
 

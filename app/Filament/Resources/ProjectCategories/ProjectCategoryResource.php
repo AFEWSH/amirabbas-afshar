@@ -27,6 +27,7 @@ class ProjectCategoryResource extends Resource
         return $schema
             ->components([
                 TextInput::make('name')->required()->maxLength(255),
+                TextInput::make('name_fa')->label('Name (Persian)')->maxLength(255),
                 TextInput::make('slug')->required()->alphaDash()->unique(ignoreRecord: true)->maxLength(255),
             ]);
     }
