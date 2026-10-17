@@ -33,7 +33,7 @@ class ArticlesTest extends TestCase
         $this->get('/en')->assertOk()->assertSee('Published Article')->assertDontSee('Draft Article')->assertDontSee('Future Article');
         $this->get('/en/blog')->assertOk()->assertSee('Published Article')->assertSee('Engineering')->assertDontSee('Draft Article')->assertDontSee('Future Article')->assertDontSee('Undated Article');
         $response = $this->get('/en/blog/'.$published->slug)->assertOk()->assertSee('Safe heading')->assertSee('Hello')->assertSee('Engineering');
-        $response->assertDontSee('<script>', false)->assertDontSee('javascript:alert', false);
+        $response->assertDontSee('<script>alert(1)</script>', false)->assertDontSee('alert(1)', false)->assertDontSee('javascript:alert', false);
         $this->get('/en/blog/draft-article')->assertNotFound();
         $this->get('/en/blog/future-article')->assertNotFound();
         $this->get('/en/blog/undated-article')->assertNotFound();

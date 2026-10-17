@@ -15,3 +15,7 @@ Dark developer portfolio based on `homepage-reference.png`: deep charcoal with a
 Use a consistent content width, generous spacing, rounded surfaces, restrained hover transitions, semantic headings, keyboard focus, reduced-motion support, and responsive layouts. Reuse the reference's accent colors while keeping each section readable. Avoid percentage skill bars, generic admin styling, and empty link buttons. Images use useful alt text, responsive sizing, and lazy loading outside the first viewport.
 
 Use Tailwind tokens for color/type/spacing. Keep English on the system font stack and use the locally bundled Dana Regular/Bold fonts for Persian, with no runtime external dependency. Keep markup easy to adapt to `dir="rtl"` later.
+
+## Theme selection
+
+Public pages default to dark and offer a light/dark button in the shared header, with localized labels and a browser-local preference applied before rendering. Light mode uses pale backgrounds, white surfaces, and dark text while preserving the teal, pink, and yellow accent blocks. Filament uses its native theme selector in the user menu with a dark default. Public and admin choices are independent.

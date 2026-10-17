@@ -89,5 +89,7 @@
   "Read published articles about development and software engineering.": "مقاله‌های منتشرشده دربارهٔ توسعه و مهندسی نرم‌افزار را بخوانید.",
   "Page :page": "صفحهٔ :page",
   "Portfolio of Amir Abbas Afshar, a full-stack developer specializing in PHP and Laravel.": "وب‌سایت شخصی امیرعباس افشار، توسعه‌دهندهٔ نرم‌افزار با تمرکز بر PHP و Laravel.",
-  "Portfolio": "نمونه‌کارها"
+  "Portfolio": "نمونه‌کارها",
+  "Light mode": "حالت روشن",
+  "Dark mode": "حالت تاریک"
 }

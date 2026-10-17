@@ -14,20 +14,20 @@ class PublicLocaleRoutesTest extends TestCase
     public function test_public_pages_use_their_own_locale_direction_and_links(): void
     {
         $this->get('/')->assertOk()
-            ->assertSee('<html lang="fa" dir="rtl">', false)
+            ->assertSee('lang="fa" dir="rtl"', false)
             ->assertSee('href="'.route('en.home').'"', false)
             ->assertSee('href="'.route('projects.index').'"', false);
 
         $this->get('/en')->assertOk()
-            ->assertSee('<html lang="en" dir="ltr">', false)
+            ->assertSee('lang="en" dir="ltr"', false)
             ->assertSee('href="'.route('home').'"', false)
             ->assertSee('href="'.route('en.projects.index').'"', false)
             ->assertSee('href="'.route('en.blog.index').'"', false);
 
-        $this->get('/projects')->assertOk()->assertSee('<html lang="fa" dir="rtl">', false);
-        $this->get('/en/projects')->assertOk()->assertSee('<html lang="en" dir="ltr">', false);
-        $this->get('/blog')->assertOk()->assertSee('<html lang="fa" dir="rtl">', false);
-        $this->get('/en/blog')->assertOk()->assertSee('<html lang="en" dir="ltr">', false);
+        $this->get('/projects')->assertOk()->assertSee('lang="fa" dir="rtl"', false);
+        $this->get('/en/projects')->assertOk()->assertSee('lang="en" dir="ltr"', false);
+        $this->get('/blog')->assertOk()->assertSee('lang="fa" dir="rtl"', false);
+        $this->get('/en/blog')->assertOk()->assertSee('lang="en" dir="ltr"', false);
     }
 
     public function test_detail_switch_keeps_slug_and_drafts_are_hidden_in_both_locales(): void

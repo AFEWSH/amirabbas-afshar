@@ -8,7 +8,7 @@
     $sharingImage = $image ?: (($settings?->og_image_path && \Illuminate\Support\Facades\Storage::disk('site_assets')->exists($settings->og_image_path) && in_array(\Illuminate\Support\Facades\Storage::disk('site_assets')->mimeType($settings->og_image_path), ['image/jpeg', 'image/png', 'image/webp'], true)) ? route('site.sharing-image') : null);
 @endphp
 <!doctype html>
-<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
+<html data-theme="dark" lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,9 +27,18 @@
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
     @if($sharingImage)<meta name="twitter:image" content="{{ $sharingImage }}">@endif
+    <script>
+        (() => {
+            let theme = 'dark';
+            try { theme = localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark'; } catch {}
+            document.documentElement.dataset.theme = theme;
+            document.documentElement.style.colorScheme = theme;
+            document.querySelector('meta[name="theme-color"]').content = theme === 'light' ? '#f7f8fa' : '#111719';
+        })();
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-ink text-paper antialiased">
+<body class="min-h-screen bg-canvas text-paper antialiased">
     <a href="#main" class="skip-link">{{ __('Skip to content') }}</a>
     <header class="site-header sticky top-0 z-50">
         <nav class="site-container site-header-inner" aria-label="{{ __('Main navigation') }}">
@@ -45,6 +54,10 @@
                 <a class="nav-link" href="{{ \App\Support\PublicUrl::route('home') }}#contact">{{ __('Contact') }}</a>
             </div>
             <div class="header-actions">
+                <button type="button" class="theme-toggle" data-theme-toggle aria-label="{{ __('Light mode') }}" aria-pressed="false" data-light-label="{{ __('Light mode') }}" data-dark-label="{{ __('Dark mode') }}" hidden>
+                    <span class="theme-icon-light" aria-hidden="true">☀</span>
+                    <span class="theme-icon-dark" aria-hidden="true">☾</span>
+                </button>
                 <a class="header-contact" href="{{ \App\Support\PublicUrl::route('home') }}#contact">{{ __('Get in touch') }}</a>
                 <a class="language-link hidden md:inline-flex" href="{{ \App\Support\PublicUrl::alternate() }}" lang="{{ app()->getLocale() === 'fa' ? 'en' : 'fa' }}" hreflang="{{ app()->getLocale() === 'fa' ? 'en' : 'fa' }}">{{ app()->getLocale() === 'fa' ? 'EN' : 'فا' }}</a>
                 <details class="mobile-menu relative">

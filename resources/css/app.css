@@ -18,6 +18,7 @@
 }
 
 @theme {
+    --color-canvas: #111719;
     --color-ink: #111719;
     --color-surface: #1b2225;
     --color-paper: #f4f1eb;
@@ -30,6 +31,18 @@
 }
 
 @layer base {
+    :root { color-scheme: dark; }
+    html[data-theme='light'] {
+        color-scheme: light;
+        --color-canvas: #f7f8fa;
+        --color-surface: #ffffff;
+        --color-paper: #17252b;
+        --color-muted: #526168;
+        --color-line: #ccd5d9;
+        --color-pink-light: #b80d45;
+    }
+    html[data-theme='light'] body { background-image: radial-gradient(circle, rgb(17 23 25 / 12%) 0.7px, transparent 0.9px); }
+
     html { scroll-behavior: smooth; }
     body {
         font-family: ui-sans-serif, system-ui, sans-serif;
@@ -47,7 +60,7 @@
 @layer components {
     .site-container { @apply mx-auto w-full max-w-6xl px-6 sm:px-8; }
     .section-block { @apply py-20 sm:py-28; }
-    .site-header { @apply border-b border-white/5 bg-ink/90 backdrop-blur-xl; }
+    .site-header { @apply border-b border-white/5 bg-canvas/90 backdrop-blur-xl; }
     .site-header-inner { @apply relative flex min-h-[4.5rem] items-center justify-between gap-3 py-2 md:gap-5; }
     .site-brand { @apply shrink-0 text-base font-bold tracking-tight text-paper sm:text-lg; }
     .site-brand-mark { @apply ms-1 font-mono text-pink-light; }
@@ -58,7 +71,7 @@
     .header-contact { @apply hidden rounded-full bg-pink px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink/15 transition hover:bg-pink/85 sm:inline-flex; }
     .language-link { @apply rounded-full border border-white/10 px-3 py-2 text-xs font-semibold text-muted transition hover:border-accent hover:text-paper; }
     .button-primary { @apply inline-flex min-h-11 items-center gap-3 rounded-full bg-pink px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-pink/15 transition hover:-translate-y-0.5 hover:bg-pink/85; }
-    .button-secondary { @apply inline-flex min-h-11 items-center rounded-full border border-line bg-ink/30 px-5 py-3 text-sm font-semibold text-paper transition hover:border-accent hover:text-accent; }
+    .button-secondary { @apply inline-flex min-h-11 items-center rounded-full border border-line bg-canvas/30 px-5 py-3 text-sm font-semibold text-paper transition hover:border-accent hover:text-accent; }
     .form-input { @apply w-full rounded-lg border border-line bg-surface px-4 py-3 text-paper placeholder:text-muted focus:border-accent focus:outline-2 focus:outline-offset-2 focus:outline-accent; }
     .placeholder-label { @apply font-medium text-accent; }
     .mobile-menu { @apply md:hidden; }
@@ -267,4 +280,35 @@
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+@layer components {
+    .theme-toggle { @apply inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-line bg-surface text-xl text-paper; }
+    .theme-toggle[hidden] { display: none; }
+    .theme-icon-dark, html[data-theme='light'] .theme-icon-light { display: none; }
+    html[data-theme='light'] .theme-icon-dark { display: inline; }
+    html[data-theme='light'] .site-header,
+    html[data-theme='light'] .desktop-nav,
+    html[data-theme='light'] .language-link,
+    html[data-theme='light'] .mobile-menu summary,
+    html[data-theme='light'] .home-about,
+    html[data-theme='light'] .listing-back-link,
+    html[data-theme='light'] .detail-hero,
+    html[data-theme='light'] .detail-content-card,
+    html[data-theme='light'] .article-body-card,
+    html[data-theme='light'] .project-gallery figure,
+    html[data-theme='light'] .article-detail-image,
+    html[data-theme='light'] .detail-tags span,
+    html[data-theme='light'] .site-footer { border-color: var(--color-line); }
+    html[data-theme='light'] .listing-hero-projects,
+    html[data-theme='light'] .detail-hero-projects { background: linear-gradient(135deg, #d8f5f5, #fff); }
+    html[data-theme='light'] .listing-hero-articles,
+    html[data-theme='light'] .article-detail-hero { background: linear-gradient(135deg, #ffe4ed, #fff); }
+    html[data-theme='light'] .listing-hero { border-color: var(--color-line); }
+    html[data-theme='light'] .inner-eyebrow,
+    html[data-theme='light'] .article-content a,
+    html[data-theme='light'] .placeholder-label { color: #007580; }
+    html[data-theme='light'] .home-featured-project:nth-child(even),
+    html[data-theme='light'] .project-list-grid > article:nth-child(even) { background-color: #e9eafb; }
+    html[data-theme='light'] .contact-dialog-close { background-color: #e7ecef; }
 }

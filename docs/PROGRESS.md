@@ -2,6 +2,9 @@
 
 ## Completed
 
+- Theme switching follow-up: the public header now offers a localized, keyboard-accessible light/dark toggle at all viewport sizes. Dark is the default regardless of OS preference; an explicit choice persists in browser storage, applies before styles load, and synchronizes across tabs. Light colors cover shared surfaces, listings/details, cards, and the contact dialog while retaining the accent sections. Filament's native theme switcher remains enabled, with its default explicitly set to dark; public and admin preferences are stored separately. No database or dependency changes.
+- Theme verification passes: all 50 feature tests (662 assertions), production Vite build, JavaScript syntax and mocked interaction checks (toggle, persistence, storage events, unavailable storage), scoped Pint, and whitespace checks. Existing locale assertions allow the new HTML theme attribute; article sanitization checks still reject the injected script payload. Tests used isolated config/route cache paths. Live browser visual verification remains pending.
+
 - README refresh: replaced the outdated planned-feature overview with current bilingual features, verified dependency versions, setup and single-admin commands, content/social icon management, asset locations, tests, deployment, and documentation links. Documentation-only change; local links, referenced paths, and whitespace were checked without running application tests or rebuilding unchanged assets.
 
 - Public bilingual conversion, Phase 1 (routing and locale) is complete: Persian is assigned to `/`, `/projects`, and `/blog` and their detail pages; matching English pages live under `/en`. The contact POST has both locale routes, links stay in the current locale, and a language switch preserves detail slugs. Public HTML now sets `lang` and `dir` from the route. Filament remains at `/admin` in English. Existing slugs and data were not changed.
